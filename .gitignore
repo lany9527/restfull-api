@@ -35,5 +35,6 @@ Thumbs.db
 /db/
 db/
 models/
-yarn.lock
 !/models/
+
+#c
