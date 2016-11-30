@@ -35,6 +35,4 @@ Thumbs.db
 /db/
 db/
 models/
-!/models/
-
-#c
+!/app/models/bear.js
