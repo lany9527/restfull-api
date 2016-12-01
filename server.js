@@ -5,11 +5,19 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-
+var jwt        = require("jsonwebtoken");
+var morgan     = require("morgan");
 var User = require('./app/models/user');
 //用于获取POST数据
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(morgan("dev"));
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+  next();
+});
 
 var port = process.env.PORT || 8080;
 var router = express.Router();
@@ -23,8 +31,6 @@ router.use(function (req, res, next) {
 router.get('/', function (req, res) {
   res.json({message: 'Hi, Welcome to our api!'});
 });
-
-
 mongoose.connect('mongodb://localhost:27017/rest');
 
 //新建
@@ -32,6 +38,8 @@ router.route('/users')
   .post(function (req, res) {
     var user = new User();
     user.name = req.body.name;
+    user.age = req.body.age;
+    user.email = req.body.email;
     user.save(function (err) {
       if (err) {
         res.send(err);
@@ -81,6 +89,7 @@ router.route('/users/:user_id')
   });
 //注册路由 所有路由都由/api作为前缀
 app.use('/api', router);
+
 
 //启动服务
 app.listen(port);
