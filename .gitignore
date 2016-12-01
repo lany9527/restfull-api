@@ -34,5 +34,3 @@ testem.log
 Thumbs.db
 /db/
 db/
-models/
-!/app/models/bear.js

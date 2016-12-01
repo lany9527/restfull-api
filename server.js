@@ -6,7 +6,7 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
-var Bear = require('./app/models/bear');
+var User = require('./app/models/user');
 //用于获取POST数据
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -28,51 +28,51 @@ router.get('/', function (req, res) {
 mongoose.connect('mongodb://localhost:27017/rest');
 
 //新建
-router.route('/bears')
+router.route('/users')
   .post(function (req, res) {
-    var bear = new Bear();
-    bear.name = req.body.name;
-    bear.save(function (err) {
+    var user = new User();
+    user.name = req.body.name;
+    user.save(function (err) {
       if (err) {
         res.send(err);
       }
-      res.json(bear);
+      res.json(user);
     })
   })
   .get(function (req, res) {
-    Bear.find(function (err, bears) {
+    User.find(function (err, users) {
       if (err) {
         res.send(err);
       }
-      res.json(bears);
+      res.json(users);
     })
   });
 //传参查找特定的记录
-router.route('/bears/:bear_id')
+router.route('/users/:user_id')
   .get(function (req, res) {
-    Bear.findById(req.params.bear_id, function (err, bear) {
+    User.findById(req.params.user_id, function (err, user) {
       if (err) {
         res.send(err);
       }
-      res.json(bear);
+      res.json(user);
     })
   })
   .put(function (req, res) {
-    Bear.findById(req.params.bear_id, function (err, bear) {
+    User.findById(req.params.user_id, function (err, user) {
       if (err) {
         res.send(err);
       }
-      bear.name = req.body.name;
-      bear.save(function (err) {
+      user.name = req.body.name;
+      user.save(function (err) {
         if (err) {
           res.send(err);
         }
-        res.json({message: 'Bear updated!'})
+        res.json({message: 'User updated!'})
       })
     })
   })
   .delete(function (req, res) {
-    Bear.remove({_id: req.params.bear_id}, function (err, bear) {
+    User.remove({_id: req.params.user_id}, function (err, user) {
       if (err) {
         res.send(err);
       }
